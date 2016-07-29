@@ -51,7 +51,7 @@ function GenerateData()
 	var Result=[];
 	var P=["0","1"];
 	for(i=0;i<Val;i++) {Result[i]=ChooseN(P,Div).replace(/,/g,"");}
-	document.getElementById('Data Field').innerHTML=Result.join(" ");
+	document.getElementById("Data Field").innerHTML=Result.join(" ");
 }
 
 //Card Deck Shuffler
@@ -86,7 +86,7 @@ function CardDeck()
 		R=P.indexOf(Q);
 		Result[i]=(i+1)+": "+Q;
 		P=P.slice(0,R).concat(P.slice(R+1));}
-	document.getElementById('Text Field').innerHTML=Result.join("\n");
+	document.getElementById("Text Field").innerHTML=Result.join("\n");
 }
 
 //Dice Roller
@@ -100,5 +100,5 @@ function DiceRoll()
 		number[i]=prompt("How many of each? ("+(i+1)+")");
 		sides[i]=prompt("How many different sides? ("+(i+1)+")");
 		result[i]=("("+number[i]+"d"+sides[i]+")"+" -- ["+RandNshow(1,sides[i],number[i])+"]");}
-	document.getElementById('Text Field').innerHTML=result.join("\n");
+	document.getElementById("Text Field").innerHTML=result.join("\n");
 }
