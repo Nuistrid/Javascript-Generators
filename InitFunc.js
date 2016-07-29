@@ -166,3 +166,13 @@ function GenerateString() {
 			Res[i]=(i+1)+": "+"("+Q.length+") "+Q;}
 	document.getElementById("Strings").innerHTML=Res.join("\n");
 }
+
+function GetNumber() 
+{
+	var Amount=getElementById("Num Amount").value;
+	var Minimum=getElementById("Min").value;
+	var Maximum=getElementById("Max").value;
+	Result=RandNshow(Minimum,Maximum,Amount);
+	document.getElementById("Numbers").innerHTML=Result;
+}
+
