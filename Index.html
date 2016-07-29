@@ -3,7 +3,9 @@
     	<title>Generators</title>
     </head>
     <body>
+    	<div class="title">Generators</div>
     	<script type="text/javascript" src="InitFunc.js"></script>
+	<link rel="stylesheet" href="Styles.css">
 	<form>
 	<input type="button" value="Roll some dice!" name="button1" onClick="DiceRoll()">
 	<input type="text" name="textfield2" id="Dice Count">
@@ -14,8 +16,12 @@
 	<input type="text" id="Number of Bits">
 	<input type="text" id="Slice Mark">
 	</form>
-	<div id="Text Field"></div>
-	<div id="Data Field"></div>
+	<div class="parent">
+	<div id="Dice" class="nav"></div>
+	<div id="Cards" class="nav"></div>
+	<div id="Strings" class="nav"></div>
+	<div id="Bits" class="nav2"></div>
+	</div>
     </body>
 </html>
 

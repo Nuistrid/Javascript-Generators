@@ -1,12 +1,36 @@
+.title
+{
+	background-color:#ffffff;
+	color:#000000;
+	font-size:30px;
+	font-family:Arial;
+}
+
+.parent
+{
+	display:flex;
+}
+
 .nav
 {
 	background-color:#00cccc;
 	color:#ff0000;
-
+	white-space:pre;
+	display:block;
+	overflow:auto;
+	max-height:400px;
+	width:400px;
 }
 
 .nav2
 {
 	background-color:#00ddee;
-	color:#00ff00;
+	color:#005500;
+	display:block;
+	flex:1;
+	white-space:-moz-pre-wrap;
+	word-wrap:break-word;
+	overflow:auto;
+	width:700px;
+	max-height:400px;
 }
