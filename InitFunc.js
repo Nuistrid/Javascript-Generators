@@ -167,7 +167,7 @@ function GenerateString() {
 	document.getElementById("Strings").innerHTML=Res.join("\n");
 }
 
-function GetNumber() 
+function GetNumbers() 
 {
 	var Amount=getElementById("Num Amount").value;
 	var Minimum=getElementById("Min").value;
