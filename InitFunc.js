@@ -167,12 +167,3 @@ function GenerateString() {
 	document.getElementById("Strings").innerHTML=Res.join("\n");
 }
 
-function GetNumbers() 
-{
-	var Amount=getElementById("Num Amount").value;
-	var Minimum=getElementById("Min").value;
-	var Maximum=getElementById("Max").value;
-	Result=RandNshow(Minimum,Maximum,Amount);
-	document.getElementById("Numbers").innerHTML=Result;
-}
-
