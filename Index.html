@@ -8,10 +8,11 @@
 	<link rel="stylesheet" href="Styles.css">
 	<form>
 	<input type="button" value="Roll some dice!" name="button1" onClick="DiceRoll()">
-	<input type="text" name="textfield2" id="Dice Count">
+	<label>How many Dice: <input type="text" id="Dice Count"></label>
 	
 	<input type="button" value="Random Deck!" name="button3" onClick="CardDeck()">
-	<input type="text" name="textfield1" id="Deck Count">
+	<label>How many suits: <input type="text" id="Deck Count"></label>
+	<label># of Cards Drawn: (0 means entire deck) <br><input type="text" id="Hand Count"></label>
 	</form>
 	<div class="parent">
 	<div id="Dice" class="nav"></div>
@@ -20,12 +21,14 @@
 	<form>
 	<input type="button" value="Generate Strings!" name="button2" onClick="GenerateString()">
 	<input type="button" value="Random Bits" name="button4" onClick="GenerateData()">
-	<input type="text" id="Number of Bits">
-	<input type="text" id="Slice Mark">
+	<label>How many Characters: <input type="text" id="Data Pieces"></label>
+	<label>Base: <input type="text" id="Secondary Slice Mark"></label>
+	<label>2-ary Base: <input type="text" id="Tertiary Slice Mark"></label>
+	<label>Point to Slice: <input type="text" id="Slice Mark"></label>
 	</form>
 	<div class="parent">
 	<div id="Strings" class="nav"></div>
-	<div id="Bits" class="nav2"></div>
+	<div id="Data" class="nav2"></div>
 	</div>
     </body>
 </html>

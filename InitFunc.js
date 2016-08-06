@@ -1,7 +1,7 @@
 function Rand(min,max)
 {
 	//Return a number between min and max, included.
-	return parseFloat(Math.floor(Math.random()*(max-min+1)))+parseFloat(min);
+	return parseFloat(Math.floor(Math.random()*( max - min + 1 ) ) + min);
 }
 
 function RandP(min,max)
@@ -30,76 +30,117 @@ function RandN(min,max,num)
 function Choose(arr)
 {
 	//Returns an element from an array at random.
-	return arr[Math.floor(Math.random()*arr.length)];
+	return arr[Math.random() * arr.length | 0];
 }
 
 function ChooseN(arr,num,w)
 {
 	var K=[];
 	for (var i=0; i<num; i++) {
-		if (w<=0 || w==undefined || w==1) K[i] = Choose(arr);
+		if (w<=0 || w==undefined || w==1) K[i] = arr[Math.random()*arr.length | 0];
 		else if (w>0) K[i] = arr[Math.floor(Math.pow(Math.random(),w)*arr.length)];
 	}
 	return K.toString();
 }
 
-//Generates Bits
+//Generates Bits, Bytes and Numbers
 function GenerateData()
 {
-	var Val=document.getElementById("Number of Bits").value;
+	var Value=document.getElementById("Data Pieces").value;
 	var Div=document.getElementById("Slice Mark").value;
+	var divThree=document.getElementById("Secondary Slice Mark").value;
+	var divFour=document.getElementById("Tertiary Slice Mark").value;
+	var divTwo="";
+	var divFive="";
 	var Result=[];
-	var P=["0","1"];
-	for(i=0;i<Val;i++) {Result[i]=ChooseN(P,Div).replace(/,/g,"");}
-	document.getElementById("Bits").innerHTML=Result.join(" ");
+	var Pool=["0","1"];
+	if (divThree=="2") {
+		divTwo=" ";
+	} else if (divThree=="16") {
+		Pool=Pool.push("2","3","4","5","6","7","8","9","A","B","C","D","E","F");
+		divTwo=" ";
+	} else if (divThree=="8") {
+		Pool=Pool.push("2","3","4","5","6","7");
+		divTwo=" ";
+	} else if (divThree=="4" && divFour=="NAC") {
+		Pool=["0","1","2","3","4","5","6","7","8","9","B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
+		divTwo="-";
+	} else if (divThree=="4" && divFour=="DNA") {
+		Pool=["A","C","T","G"];
+		Div=3;
+	} else if (divThree=="4" && divFour=="RNA") {
+		Pool=["A","C","U","G"];
+		Div=3;
+	} else if (divThree=="4" && !(divFour=="NAC" || divFour=="DNA" || divFour=="RNA")) {
+		Pool=Pool.push("2","3");
+	} else if (divThree=="3" && divFour=="AMN") {
+		Pool=["Ala","Cys","Asp","Glu","Phe","Gly","His","Ile","Lys","Leu","Met","Asn","Pyl","Pro","Gln","Arg","Ser","Thr","Sec","Val","Trp","Tyr"];
+		divTwo="-";
+		divFive="-";
+	}
+	for(i=0;i<Value;i++) {
+		Result[i]=ChooseN(Pool,Div).replace(/,/g,divFive);
+	}
+	document.getElementById("Data").innerHTML=Result.join(divTwo);
 }
 
 //Card Deck Shuffler
-function CardDeck()
-{
-	var Cd=["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"];
-	var H=[];
-	var S=[];
-	var D=[];
-	var C=[];
-	var Result=[];
-	var Dk=document.getElementById("Deck Count").value;
-	for(i=0;i<Cd.length;i++) {
-		S[i]=Cd[i]+" of Spades";
-		H[i]=Cd[i]+" of Hearts";
-		C[i]=Cd[i]+" of Clubs";	
-		D[i]=Cd[i]+" of Diamonds";}
-	if (Dk=="4") {P=S.concat(C,D,H);}
-	else if (Dk=="5") {
-		var St=[];
-		for(i=0;i<Cd.length;i++) {St[i]=Cd[i]+" of Stars";}
-		P=S.concat(C,D,H,St);}
-	else if (Dk=="6") {
-		var Rk=[];
-		var Wh=[];
-		for(i=0;i<Cd.length;i++) {
-			Rk[i]=Cd[i]+" of Rackets";
-			Wh[i]=Cd[i]+" of Wheels";}
-		P=S.concat(C,D,H,Rk,Wh);}
-	for(i=0;i<Dk*Cd.length;i++) {
-		var Q=Choose(P);
-		R=P.indexOf(Q);
-		Result[i]=(i+1)+": "+Q;
-		P=P.slice(0,R).concat(P.slice(R+1));}
-	document.getElementById("Cards").innerHTML=Result.join("\n");
+function CardDeck() {
+	var cardNames = ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"];
+	var Result = [];
+	var DeckCount = document.getElementById("Deck Count").value;
+	var HandCount = document.getElementById("Hand Count").value;
+	//Suit Names
+
+	var suitNames = [" of Spades"," of Hearts"," of Clubs"," of Diamonds"];
+	if (DeckCount == "5") {
+		suitNames.push(" of Stars");
+	} else if (DeckCount == "6") {
+		suitNames.push(" of Rackets");
+		suitNames.push(" of Wheels");
+	} else if (DeckCount == "8") {
+		suitNames.push(" of Roses");
+		suitNames.push(" of Axes");
+		suitNames.push(" of Tridents");
+		suitNames.push(" of Doves");
+	}
+
+	//Builds Suits
+	
+	var suits = [];
+	for(i=0;i<cardNames.length;i++) {
+		for(j=0;j<suitNames.length;j++) {
+			if (i===0) suits.push([]);
+			suits[j].push(cardNames[i] + suitNames[j]);
+		}
+	}
+
+	var Pool = Array.prototype.concat.apply([],suits);
+	var Full = cardNames.length * suitNames.length;
+	
+	if(HandCount == 0) {HandCount = Full;}
+	var Q="";
+	for(i=0;i<HandCount;i++) {
+		Q = Choose(Pool);
+		R = Pool.indexOf(Q);
+		Result[i] = (i+1)+": "+Q;
+		Pool = Pool.slice(0,R).concat(Pool.slice(R+1));
+	}
+	document.getElementById("Cards").innerHTML = Result.join("<br>");
 }
 
 //Dice Roller
 function DiceRoll()
 {
-	var Num=document.getElementById("Dice Count").value;
+	var number=document.getElementById("Dice Count").value;
 	var sides=[];
-	var number=[];
+	var diceNumber=[];
 	var result=[];
-	for(i=0;i<Num;i++) {
-		number[i]=prompt("How many of each? ("+(i+1)+")");
+	for(i=0;i<number;i++) {
+		diceNumber[i]=prompt("How many of each? ("+(i+1)+")");
 		sides[i]=prompt("How many different sides? ("+(i+1)+")");
-		result[i]=("("+number[i]+"d"+sides[i]+")"+" -- ["+RandNshow(1,sides[i],number[i])+"]");}
+		result[i]=("("+diceNumber[i]+"d"+sides[i]+")"+" -- ["+RandNshow(1,sides[i],diceNumber[i])+"]");
+	}
 	document.getElementById("Dice").innerHTML=result.join("\n");
 }
 
@@ -108,62 +149,63 @@ function GenerateString() {
 	var Type=prompt("Types of Pools:\n1:a-z\n2:A-Z\n3:Sym\n4:0-9\n5:1,3,4\n6:2,3,4\n7:1,2,4\n8:<,>,|\n9:All\n10:Custom Pool\n11:Custom Pattern\nN:Name");
 	if (Type!=11) {
 		var min=prompt("Minimum of chars per string");
-		var max=prompt("Maximum of chars per string");}
+		var max=prompt("Maximum of chars per string");
+	}
 	var Res=[];
-	var P=[];
-	var A=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-	var B=[];
-	for(i=0;i<A.length;i++) {B[i]=A[i].toUpperCase();}
-	for(i=0;i<Custom;i++) {C[i]=prompt((i+1)+": Element");}
-	var S=["!","@","#","$","%","^","(",")","*","-","+"];
-	var N=["0","1","2","3","4","5","6","7","8","9"];
+	var Pool=[];
+	var Alphabet=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+	var upperAlphabet=[];
+	for(i=0;i<A.length;i++) {upperAlphabet.push(Alphabet[i].toUpperCase());}
+	for(i=0;i<Custom;i++) {Cust.push(prompt((i+1)+": Element"));}
+	var Symbol=["!","@","#","$","%","^","(",")","*","-","+"];
+	var Numbers=["0","1","2","3","4","5","6","7","8","9"];
 	var Custom=0;
-	var C=[];
-	if (Type=="1") {P=A;}
-	else if (Type=="N") {
-		var N1,N2,N3,N4,N5;
-		for(i=0;i<A.length;i++) {
-		N1[i]=A[i]+"a";
-		N2[i]=A[i]+"e";
-		N3[i]=A[i]+"i";	
-		N4[i]=A[i]+"o";
-		N5[i]=A[i]+"u";}
-		P=N1.concat(N2,N3,N4,N5,["yy","gh","th","fr","ph","qu","rhe","pf"]);}
-       	else if (Type=="2") {P=B;}
-	else if (Type=="3") {P=S;}
-	else if (Type=="4") {P=N;}
-	else if (Type=="5") {P=A.concat(S,N);}
-	else if (Type=="6") {P=B.concat(S,N);}
-	else if (Type=="7") {P=A.concat(B,N);}
-	else if (Type=="8") {P=["<",">","|"];}
-	else if (Type=="9") {P=A.concat(B,S,N,["<",">","|"]);}
-	else if (Type=="10") {Custom=prompt("Length of Custom Pool");
-		for(i=0;i<Custom;i++) {C[i]=prompt((i+1)+": Element");}
-		P=C;}
+	var Cust=[];
+	if (Type=="1") {Pool=Alphabet;}
+       	else if (Type=="2") {Pool=upperAlphabet;
+	} else if (Type=="3") {Pool=Symbol;
+	} else if (Type=="4") {Pool=Numberic;
+	} else if (Type=="5") {Pool=Alphabet.concat(Symbol,Numeric);
+	} else if (Type=="6") {Pool=upperAlphabet.concat(Symbol,Numeric);
+	} else if (Type=="7") {Pool=Alphabet.concat(upperAlphabet,Numeric);
+	} else if (Type=="8") {Pool=["<",">","|"];}
+	else if (Type=="9") {Pool=Alphabet.concat(upperAlphabet,Symbol,Numeric,["<",">","|"]);
+	} else if (Type=="10") {
+		Custom=prompt("Length of Custom Pool");
+		for(i=0;i<Custom;i++) {Cust.push(prompt((i+1)+": Element"));}
+		Pool=Cust;
+	}
 	else if (Type=="11") {
 		var Delim=prompt("Delimiter");
-		var L=prompt("# of Distinct Sets");
+		var Length=prompt("# of Distinct Sets");
 		var Pattern=[];
 		var Q=[];
-		var T=0;
+		var T=[];
 		var Settype=prompt("What Type?");
 		if (Settype=="Custom") {
-		for(k=0;k<L;k++) {Pattern[k]=prompt((k+1)+": Length of Set");}
-		} else if (Settype=="Telephone") {Pattern=[3,3,4];
-		Delim="-";
-		L=3;
-		T=N;}
-		else if (Settype=="SSN") {Pattern=[3,2,4];
-		Delim="-";
-		L=3;
-		T=N;}
+		for(k=0;k<Length;k++) {
+			Pattern[k]=prompt((k+1)+": Length of Set");
+			T[k]=Numeric;}
+		} else if (Settype=="Telephone") {
+			Pattern=[3,3,4];
+			Delim="-",Length=3,T=[Numeric,Numeric,Numeric];
+		} else if (Settype=="SSN") {
+			Pattern=[3,2,4];
+			Delim="-",Length=3,T=[Numeric,Numeric,Numeric];
+		}
 		for(i=0;i<str;i++) {
-			for(j=0;j<L;j++) {Q[j]=ChooseN(T,Pattern[j]).replace(/,/g,"");}
-			Res[i]=(i+1)+": "+Q.toString().replace(/,/g,Delim);}
+			for(j=0;j<Length;j++) {
+				Q[j]=ChooseN(T[j],Pattern[j]).replace(/,/g,"");
+			}
+			Res[i]=(i+1)+": "+Q.toString().replace(/,/g,Delim);
+		}
 	}
 	for(i=0;i<str;i++) {
-			var Q = ChooseN(P,Rand(min,max)).replace(/,/g,"");
-			Res[i]=(i+1)+": "+"("+Q.length+") "+Q;}
+			var U=ChooseN(Pool,Rand(min,max)).replace(/,/g,"");
+			if (min>1 && Pool==Numeric && U[0]=="0") {
+				U=Choose(["1","2","3","4","5","6","7","8","9"])+"*"+U}
+			Res[i]=(i+1)+": "+"("+U.length+") "+U;}
 	document.getElementById("Strings").innerHTML=Res.join("\n");
 }
+
 
