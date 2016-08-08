@@ -90,6 +90,7 @@ function CardDeck() {
 	var Result = [];
 	var DeckCount = document.getElementById("Deck Count").value;
 	var HandCount = document.getElementById("Hand Count").value;
+
 	//Suit Names
 
 	var suitNames = [" of Spades"," of Hearts"," of Clubs"," of Diamonds"];
@@ -103,6 +104,10 @@ function CardDeck() {
 		suitNames.push(" of Axes");
 		suitNames.push(" of Tridents");
 		suitNames.push(" of Doves");
+	} else if (DeckCount == "1") {
+		suitNames=[" of Wands"," of Cups"," of Swords"," of Coins"];
+		cardNames.push("Knight");
+		cardNames[10]="Page";
 	}
 
 	//Builds Suits
@@ -117,9 +122,12 @@ function CardDeck() {
 
 	var Pool = Array.prototype.concat.apply([],suits);
 	var Full = cardNames.length * suitNames.length;
-	
-	if(HandCount == 0) {HandCount = Full;}
 	var Q="";
+	
+	if(HandCount == 0 || HandCount == "" || HandCount == null) {
+		HandCount = Pool.length;
+	}
+
 	for(i=0;i<HandCount;i++) {
 		Q = Choose(Pool);
 		R = Pool.indexOf(Q);
@@ -157,14 +165,14 @@ function GenerateString() {
 	var upperAlphabet=[];
 	for(i=0;i<A.length;i++) {upperAlphabet.push(Alphabet[i].toUpperCase());}
 	for(i=0;i<Custom;i++) {Cust.push(prompt((i+1)+": Element"));}
-	var Symbol=["!","@","#","$","%","^","(",")","*","-","+"];
-	var Numbers=["0","1","2","3","4","5","6","7","8","9"];
+	var Symbol=["!","@","#","$","%","^","(",")","*","-","+","<",">","|","\'","\""];
+	var Numeric=["0","1","2","3","4","5","6","7","8","9"];
 	var Custom=0;
 	var Cust=[];
 	if (Type=="1") {Pool=Alphabet;}
        	else if (Type=="2") {Pool=upperAlphabet;
 	} else if (Type=="3") {Pool=Symbol;
-	} else if (Type=="4") {Pool=Numberic;
+	} else if (Type=="4") {Pool=Numeric;
 	} else if (Type=="5") {Pool=Alphabet.concat(Symbol,Numeric);
 	} else if (Type=="6") {Pool=upperAlphabet.concat(Symbol,Numeric);
 	} else if (Type=="7") {Pool=Alphabet.concat(upperAlphabet,Numeric);
@@ -175,37 +183,13 @@ function GenerateString() {
 		for(i=0;i<Custom;i++) {Cust.push(prompt((i+1)+": Element"));}
 		Pool=Cust;
 	}
-	else if (Type=="11") {
-		var Delim=prompt("Delimiter");
-		var Length=prompt("# of Distinct Sets");
-		var Pattern=[];
-		var Q=[];
-		var T=[];
-		var Settype=prompt("What Type?");
-		if (Settype=="Custom") {
-		for(k=0;k<Length;k++) {
-			Pattern[k]=prompt((k+1)+": Length of Set");
-			T[k]=Numeric;}
-		} else if (Settype=="Telephone") {
-			Pattern=[3,3,4];
-			Delim="-",Length=3,T=[Numeric,Numeric,Numeric];
-		} else if (Settype=="SSN") {
-			Pattern=[3,2,4];
-			Delim="-",Length=3,T=[Numeric,Numeric,Numeric];
-		}
-		for(i=0;i<str;i++) {
-			for(j=0;j<Length;j++) {
-				Q[j]=ChooseN(T[j],Pattern[j]).replace(/,/g,"");
-			}
-			Res[i]=(i+1)+": "+Q.toString().replace(/,/g,Delim);
-		}
-	}
+	var U="";
 	for(i=0;i<str;i++) {
-			var U=ChooseN(Pool,Rand(min,max)).replace(/,/g,"");
+			U=ChooseN(Pool,Rand(min,max)).replace(/,/g,"");
 			if (min>1 && Pool==Numeric && U[0]=="0") {
-				U=Choose(["1","2","3","4","5","6","7","8","9"])+"*"+U}
+				U[0]="";
+			}
 			Res[i]=(i+1)+": "+"("+U.length+") "+U;}
 	document.getElementById("Strings").innerHTML=Res.join("\n");
 }
-
 
