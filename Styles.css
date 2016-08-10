@@ -13,6 +13,7 @@
 
 .nav
 {
+	font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
 	background-color:#00cccc;
 	color:#ff0000;
 	white-space:pre;
@@ -24,6 +25,7 @@
 
 .nav2
 {
+	font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
 	background-color:#00ddee;
 	color:#005500;
 	display:block;
